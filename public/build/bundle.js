@@ -103,6 +103,8 @@
 		var overlay = document.querySelectorAll('.overlay')[0];
 		var input = document.querySelectorAll('.pop-up>input')[0];
 		var question = document.querySelectorAll('.question')[0];
+		var completeButtons = document.querySelectorAll('li input');
+		var enteringTasks = document.querySelectorAll('.task-name');
 
 		if (action.type === 'ADD_TASK') {
 
@@ -118,6 +120,8 @@
 			}
 		} else if (action.type === 'DELETE_TASK') {
 
+			completeButtons[action.index].checked = false;
+			enteringTasks[action.index].classList.remove('completed');
 			newTasks = state.filter(function (task) {
 				return task !== action.taskName;
 			});
@@ -160,10 +164,10 @@
 			saveButton.classList.remove('edit');
 		} else if (action.type === 'COMPLETE_TASK') {
 
-			if (document.querySelectorAll('li input')[action.index].checked) {
-				document.querySelectorAll('.task-name')[action.index].classList.add('completed');
+			if (completeButtons[action.index].checked) {
+				enteringTasks[action.index].classList.add('completed');
 			} else {
-				document.querySelectorAll('.task-name')[action.index].classList.remove('completed');
+				enteringTasks[action.index].classList.remove('completed');
 			}
 		} else if (action.type === 'CHANGE_LANG') {
 
@@ -24145,8 +24149,8 @@
 	        }
 	    }, {
 	        key: 'onDeleteTask',
-	        value: function onDeleteTask(task) {
-	            this.props.onDeleteTask(task);
+	        value: function onDeleteTask(task, index) {
+	            this.props.onDeleteTask(task, index);
 	        }
 	    }, {
 	        key: 'onCompleteTask',
@@ -24193,7 +24197,7 @@
 	                    'ul',
 	                    null,
 	                    this.props.testStore.map(function (task, index) {
-	                        return _react2['default'].createElement(_TaskJsx2['default'], { key: index, name: task, onDelete: _this.onDeleteTask.bind(_this, task), openEditPopUp: _this.openPopUp.bind(_this, task, index), onComplete: _this.onCompleteTask.bind(_this, task, index) });
+	                        return _react2['default'].createElement(_TaskJsx2['default'], { key: index, name: task, onDelete: _this.onDeleteTask.bind(_this, task, index), openEditPopUp: _this.openPopUp.bind(_this, task, index), onComplete: _this.onCompleteTask.bind(_this, task, index) });
 	                    })
 	                ),
 	                _react2['default'].createElement('div', { className: 'overlay', onClick: this.closePopUp.bind(this) }),
@@ -24216,8 +24220,8 @@
 	            dispatch({ type: 'ADD_TASK', taskName: taskName });
 	        },
 
-	        onDeleteTask: function onDeleteTask(taskName) {
-	            dispatch({ type: 'DELETE_TASK', taskName: taskName });
+	        onDeleteTask: function onDeleteTask(taskName, index) {
+	            dispatch({ type: 'DELETE_TASK', taskName: taskName, index: index });
 	        },
 
 	        onEditTask: function onEditTask(taskName) {

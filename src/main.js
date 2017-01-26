@@ -40,6 +40,8 @@ function todoList (state = initialState, action) {
 	var overlay = document.querySelectorAll('.overlay')[0];
 	var input = document.querySelectorAll('.pop-up>input')[0];
 	var question = document.querySelectorAll('.question')[0];
+	var completeButtons = document.querySelectorAll('li input');
+	var enteringTasks = document.querySelectorAll('.task-name');
 
 
 	if (action.type === 'ADD_TASK') {
@@ -60,6 +62,8 @@ function todoList (state = initialState, action) {
 
 	} else if (action.type === 'DELETE_TASK') {
 
+		completeButtons[action.index].checked = false;
+		enteringTasks[action.index].classList.remove('completed');
 		newTasks = state.filter((task) => {
             return task !== action.taskName;
         });
@@ -110,10 +114,10 @@ function todoList (state = initialState, action) {
 
 	} else if (action.type === 'COMPLETE_TASK') {
 
-		if (document.querySelectorAll('li input')[action.index].checked) {
-			document.querySelectorAll('.task-name')[action.index].classList.add('completed');
+		if (completeButtons[action.index].checked) {
+			enteringTasks[action.index].classList.add('completed');
 		} else {
-			document.querySelectorAll('.task-name')[action.index].classList.remove('completed');
+			enteringTasks[action.index].classList.remove('completed');
 		}
 
 	} else if (action.type === 'CHANGE_LANG') {

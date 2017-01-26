@@ -29,8 +29,8 @@ class MainApp extends Component {
         this.props.closePopUp();
     }
 
-    onDeleteTask(task) {
-        this.props.onDeleteTask(task);
+    onDeleteTask(task, index) {
+        this.props.onDeleteTask(task, index);
     }
 
     onCompleteTask(task, index) {
@@ -52,7 +52,7 @@ class MainApp extends Component {
                 </div>
                 <ul>
                     {this.props.testStore.map((task, index) =>
-                        <Task key={index} name={task} onDelete={this.onDeleteTask.bind(this, task)} openEditPopUp={this.openPopUp.bind(this, task, index)} onComplete={this.onCompleteTask.bind(this, task, index)}></Task>
+                        <Task key={index} name={task} onDelete={this.onDeleteTask.bind(this, task, index)} openEditPopUp={this.openPopUp.bind(this, task, index)} onComplete={this.onCompleteTask.bind(this, task, index)}></Task>
                     )}      
                 </ul>
                 <div className="overlay" onClick={this.closePopUp.bind(this)}></ div>
@@ -73,8 +73,8 @@ export default connect (
             dispatch({ type: 'ADD_TASK', taskName: taskName });
         },
 
-        onDeleteTask: (taskName) => {
-            dispatch({ type: 'DELETE_TASK', taskName: taskName });
+        onDeleteTask: (taskName, index) => {
+            dispatch({ type: 'DELETE_TASK', taskName: taskName, index: index });
         },
 
         onEditTask: (taskName) => {
